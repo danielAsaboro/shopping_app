@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 
 List<Product> productListPassed = [
   Product(
@@ -28,12 +27,7 @@ List<Product> productListPassed = [
 ];
 
 class CartNotifier extends StateNotifier<Cart> {
-  CartNotifier()
-      : super((Cart(
-            productList:
-                //
-                // <Product>[]
-                productListPassed)));
+  CartNotifier() : super((Cart(productList: productListPassed)));
 
   void addToCart(Product product) {
     final productList = state.productList;
@@ -92,6 +86,7 @@ class CartNotifier extends StateNotifier<Cart> {
 final cartProvider = StateNotifierProvider<CartNotifier, Cart>((ref) {
   return CartNotifier();
 });
+
 void main() {
   runApp(ProviderScope(child: MyApp()));
 }
@@ -100,8 +95,11 @@ class EachProductWidget extends ConsumerWidget {
   final Product product;
   final int index;
 
-  const EachProductWidget(
-      {super.key, required this.product, required this.index});
+  const EachProductWidget({
+    super.key,
+    required this.product,
+    required this.index,
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
@@ -158,6 +156,9 @@ class EachProductWidget extends ConsumerWidget {
                     ref
                         .read(cartProvider.notifier)
                         .decreaseQuantityAtIndex(index);
+
+                        // ref
+                        // .read(cartProvider).
                   },
                 ),
                 IconButton(
@@ -187,6 +188,7 @@ class EachProductWidget extends ConsumerWidget {
   }
 }
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -197,17 +199,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
-          child:
-              // eachProductWidget(
-              //   product: Product(
-              //     id: 1,
-              //     name: 'Sample Product',
-              //     price: 19.99,
-              //     quantity: 5,
-              //     isWishlisted: true,
-              //   ),
-              // ),
-              ProductListView(),
+          child: ProductListView(),
         ),
       ),
     );
